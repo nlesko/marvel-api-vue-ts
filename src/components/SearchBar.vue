@@ -7,6 +7,7 @@
             solo
             label="Enter to search for hero"
             clearable
+            @input="onQueryChange"
           ></v-text-field>
         </v-col>
         <v-col cols="12" class="d-flex flex-row">
@@ -55,6 +56,11 @@ export default class SearchBar extends Vue {
     // this.updatedCriterias = newCriteria;
     this.updatedCriterias = newCriteria;
     return this.updatedCriterias;
+  }
+
+  @Emit('onQueryChange')
+  onQueryChange() {
+    return this.query;
   }
 }
 </script>

@@ -3,11 +3,13 @@
     <SearchBar
       :searchCriteria="searchCriteria"
       @changeCriteria="updateCriteria($event)"
+      @onQueryChange="updateResults($event)"
     />
     <section v-for="(criteria, i) in searchCriteria" :key="i">
     <SearchResults
       :searchCriteria="searchCriteria"
       :criteria="criteria"
+      :searchQuery="searchQuery"
     />
     </section>
   </section>
@@ -30,6 +32,8 @@ export default class About extends Vue {
 
   public searchCriteria: Array<string> = [this.searchType];
 
+  public searchQuery = '';
+
   get searchType() {
     return this.searchTypes[Math.floor(Math.random() * this.searchTypes.length)];
   }
@@ -38,6 +42,10 @@ export default class About extends Vue {
     // console.log('upc', updatedCriteria);
     this.searchCriteria = updatedCriteria;
     // console.log(this.searchCriteria);
+  }
+
+  updateResults(query: string) {
+    this.searchQuery = query;
   }
 }
 </script>

@@ -10,7 +10,7 @@
         cols="12"
         md="6"
         lg="3"
-        v-for="item in comics.slice(0,20)" :key="item.id"
+        v-for="item in this.comicsResults.slice(0,20)" :key="item.id"
       >
         <SearchResultsItem
           :imgSrc="item.thumbnail.path + '.' + item.thumbnail.extension"
@@ -26,7 +26,7 @@
         cols="12"
         md="6"
         lg="3"
-        v-for="item in characters.slice(0,20)" :key="item.id"
+        v-for="item in this.charactersResults.slice(0,20)" :key="item.id"
       >
         <SearchResultsItem
           :imgSrc="item.thumbnail.path + '.' + item.thumbnail.extension"
@@ -71,6 +71,8 @@ export default class SearchResults extends Vue {
 
   @Prop() criteria!: string;
 
+  @Prop() searchQuery!: string;
+
   private transition = 'fade-transition';
 
   public isLoading = true;
@@ -80,6 +82,17 @@ export default class SearchResults extends Vue {
     // console.log(this.comics);
   }
 
+  get comicsResults() {
+    return this.comics.filter((result: object) => (
+      result.title.toLowerCase().match(this.searchQuery.toLowerCase())
+    ));
+  }
+
+  get charactersResults() {
+    return this.characters.filter((result: object) => (
+      result.name.toLowerCase().match(this.searchQuery.toLowerCase())
+    ));
+  }
   // updated() {
   //   console.log(this.searchCriteria);
   // }

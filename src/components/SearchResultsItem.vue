@@ -19,7 +19,7 @@
               max-height="358"
               :src="imgSrc"
             >
-              <v-card-title>{{ title }}</v-card-title>
+              <v-card-title class="overlay">{{ title }}</v-card-title>
             </v-img>
             </router-link>
           </v-card>
@@ -47,4 +47,7 @@ export default class SearchResultsItem extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.overlay{
+  background: rgba(0,0,0,0.7);
+}
 </style>
