@@ -2,8 +2,9 @@
   <v-app>
     <Header />
     <v-content>
-      <router-view></router-view>
+        <router-view></router-view>
     </v-content>
+    <v-footer>Data provided by Marvel. © 2014 Marvel</v-footer>
   </v-app>
 </template>
 
