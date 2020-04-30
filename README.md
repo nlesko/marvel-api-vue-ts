@@ -1,5 +1,7 @@
 # marvel-api-vue-ts
 
+This project was built with VueJS, Typescript, Vuex, Vuetify and Axios using official Marvel API.
+
 ## Project setup
 ```
 npm install
