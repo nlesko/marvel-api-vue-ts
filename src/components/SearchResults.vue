@@ -9,15 +9,24 @@
 
         </v-col>
     </v-row>
-    <v-row v-if="results.length < 1 && !isLoading">
+    <v-row v-if="results.length < 1 && !isLoading && !error">
       <v-col cols="12">
             <span class="loading">
               Sorry, no data found!
             </span>
       </v-col>
     </v-row>
+    <v-row v-if="error && !isLoading">
+      <v-col cols="12">
+            <span class="loading">
+              Something went wrong while trying to load data, please try again later.
+            </span>
+      </v-col>
+    </v-row>
     <v-row v-else>
-      <v-col cols="12"><h3 class="">{{ criteria.toUpperCase() }}</h3></v-col>
+      <v-col cols="12" v-if="results.length > 0">
+        <h3 class="">{{ criteria.toUpperCase() }}</h3>
+      </v-col>
       <v-col
         cols="12"
         sm="6"
@@ -54,6 +63,8 @@ export default class SearchResults extends Vue {
   @Prop() searchQuery!: string;
 
   @Prop() public isLoading!: boolean;
+
+  @Prop() public error!: boolean;
 
   private transition = 'fade-transition';
 }

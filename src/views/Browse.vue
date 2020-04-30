@@ -18,6 +18,7 @@
       :results="charactersResults"
       :searchQuery="searchQuery"
       :isLoading="isLoading"
+      :error="error"
       v-if="criteria == 'characters'"
     />
     </section>
@@ -49,6 +50,8 @@ export default class About extends Vue {
   public searchQuery = '';
 
   public isLoading = true;
+
+  public error = false;
 
   @Comics.State
   public comics!: Array<object>;
@@ -86,9 +89,15 @@ export default class About extends Vue {
   }
 
   async fetch() {
-    await this.getComics();
-    await this.getCharacters();
-    this.isLoading = false;
+    try {
+      await this.getComics();
+      await this.getCharacters();
+      this.isLoading = false;
+    } catch (err) {
+      this.error = true;
+      this.isLoading = false;
+      // console.error(err.message);
+    }
   }
 
   updateCriteria(updatedCriteria: Array<string>) {

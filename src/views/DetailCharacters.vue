@@ -1,6 +1,10 @@
 <template>
   <section class="detail-comics">
     <v-container>
+      <v-row><v-col cols="12" v-if="this.fetchError && !isLoading">
+            <span class="loading">Sorry, but couldn't find any data about this comics</span>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col
           cols="12"
@@ -29,9 +33,6 @@
           />
         </v-col>
       </v-row>
-      <v-row><v-col cols="12" v-if="!this.charactersItem && !isLoading">
-            <span class="loading">Sorry, but couldn't find any data about this comics</span>
-        </v-col></v-row>
     </v-container>
   </section>
 </template>
@@ -55,6 +56,8 @@ export default class DetailCharacters extends Vue {
   @Characters.State
   public charactersItem!: object;
 
+  public fetchError = false;
+
   @Characters.State
   public characterComics!: Array<object>;
 
@@ -69,9 +72,14 @@ export default class DetailCharacters extends Vue {
   }
 
   public async featch() {
-    await this.getCharactersItem(this.$route.params.id);
-    await this.getCharacterComics(this.$route.params.id);
-    this.isLoading = false;
+    try {
+      await this.getCharactersItem(this.$route.params.id);
+      await this.getCharacterComics(this.$route.params.id);
+      this.isLoading = false;
+    } catch (err) {
+      this.isLoading = false;
+      this.fetchError = true;
+    }
   }
 }
 </script>
