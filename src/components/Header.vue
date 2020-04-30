@@ -53,12 +53,21 @@ export default class Header extends Vue {
   private sidebar = false;
 
   menuItems: Array<object> = [
-    { title: 'Home', path: '/' },
-    { title: 'Browse Universe', path: '/browse' },
+    { title: 'Browse Universe', path: '/' },
   ];
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.v-navigation-drawer{
+  @media(min-width: 600px){
+    display: none !important;
+  }
+}
+header{
+  @media(min-width: 600px){
+    left: 0 !important;
+  }
+}
 </style>

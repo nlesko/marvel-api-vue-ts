@@ -30,7 +30,16 @@ class Comics extends VuexModule {
   @Action
   public async getComics(): Promise<void> {
     const { data } = await ComicsService.get();
-    this.context.commit('setComics', data.data.results);
+    const moreData = await ComicsService.get(20, 100);
+    const results = [...data.data.results, ...moreData.data.data.results];
+    const filteredResults = results.reduce((acc, current) => {
+      const x = acc.find((item: object) => item.id === current.id);
+      if (!x) {
+        return acc.concat([current]);
+      }
+      return acc;
+    }, []);
+    this.context.commit('setComics', filteredResults);
   }
 
   @Action

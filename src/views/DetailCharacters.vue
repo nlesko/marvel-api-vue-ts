@@ -7,15 +7,31 @@
           lg="10"
           class="mx-auto"
         >
+          <div class="skeleton-wrapper loading-holder mt-5 pt-5" v-if="isLoading">
+            <span class="loading">Loading data..</span>
+            <v-row>
+              <v-col cols="12" lg="9">
+                <v-skeleton-loader type="article">
+                </v-skeleton-loader>
+              </v-col>
+              <v-col cols="12" lg="3">
+                <v-skeleton-loader type="image" height="500" min-height="500">
+                </v-skeleton-loader>
+              </v-col>
+            </v-row>
+          </div>
           <DetailView
             :item="this.charactersItem"
             :relatedItemsTitle="'comics'"
             :relatedItems="this.characterComics"
             :isLoading="isLoading"
-            v-if="!isLoading"
+            v-else
           />
         </v-col>
       </v-row>
+      <v-row><v-col cols="12" v-if="!this.charactersItem && !isLoading">
+            <span class="loading">Sorry, but couldn't find any data about this comics</span>
+        </v-col></v-row>
     </v-container>
   </section>
 </template>

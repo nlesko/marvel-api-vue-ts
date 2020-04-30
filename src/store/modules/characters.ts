@@ -30,7 +30,16 @@ class Characters extends VuexModule {
   @Action
   public async getCharacters(): Promise<void> {
     const { data } = await CharactersService.get();
-    this.context.commit('setCharacters', data.data.results);
+    const moreData = await CharactersService.get(20, 100);
+    const results = [...data.data.results, ...moreData.data.data.results];
+    const filteredResults = results.reduce((acc, current) => {
+      const x = acc.find((item: object) => item.id === current.id);
+      if (!x) {
+        return acc.concat([current]);
+      }
+      return acc;
+    }, []);
+    this.context.commit('setCharacters', filteredResults);
   }
 
   @Action

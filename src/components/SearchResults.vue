@@ -1,38 +1,34 @@
 <template>
-  <v-container>
+  <v-container fluid>
       <v-row v-if="isLoading" transition="fade-transition">
         <v-col cols="12">
-          Loading data...
+
+            <span class="loading">
+              Loading data...
+            </span>
+
         </v-col>
     </v-row>
-    <v-row v-if="criteria == 'comics'">
-      <v-col
-        cols="12"
-        md="6"
-        lg="3"
-        v-for="item in this.comicsResults.slice(0,20)" :key="item.id"
-      >
-        <SearchResultsItem
-          :imgSrc="item.thumbnail.path + '.' + item.thumbnail.extension"
-          :title="item.title"
-          :isLoading="isLoading"
-          :criteria="criteria"
-          :id="item.id"
-        />
+    <v-row v-if="results.length < 1 && !isLoading">
+      <v-col cols="12">
+            <span class="loading">
+              Sorry, no data found!
+            </span>
       </v-col>
     </v-row>
-    <v-row v-if="criteria == 'characters'">
+    <v-row v-else>
+      <v-col cols="12"><h3 class="">{{ criteria.toUpperCase() }}</h3></v-col>
       <v-col
         cols="12"
-        md="6"
+        sm="6"
         lg="3"
-        v-for="item in this.charactersResults.slice(0,20)" :key="item.id"
+        v-for="item in this.results.slice(0,20)" :key="item.id"
       >
         <SearchResultsItem
           :imgSrc="item.thumbnail.path + '.' + item.thumbnail.extension"
-          :title="item.name"
-          :criteria="criteria"
+          :title="item.title || item.name"
           :isLoading="isLoading"
+          :criteria="criteria"
           :id="item.id"
         />
       </v-col>
@@ -42,12 +38,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 
 import SearchResultsItem from '@/components/SearchResultsItem.vue';
-
-const Comics = namespace('Comics');
-const Characters = namespace('Characters');
 
 @Component({
   components: {
@@ -55,53 +47,15 @@ const Characters = namespace('Characters');
   },
 })
 export default class SearchResults extends Vue {
-  @Comics.State
-  public comics!: Array<object>;
-
-  @Comics.Action
-  public getComics!: () => Promise<void>;
-
-  @Characters.State
-  public characters!: Array<object>;
-
-  @Characters.Action
-  public getCharacters!: () => Promise<void>;
-
-  @Prop() searchCriteria!: Array<string>;
-
   @Prop() criteria!: string;
+
+  @Prop() results!: Array<object>;
 
   @Prop() searchQuery!: string;
 
+  @Prop() public isLoading!: boolean;
+
   private transition = 'fade-transition';
-
-  public isLoading = true;
-
-  mounted() {
-    this.fetch();
-    // console.log(this.comics);
-  }
-
-  get comicsResults() {
-    return this.comics.filter((result: object) => (
-      result.title.toLowerCase().match(this.searchQuery.toLowerCase())
-    ));
-  }
-
-  get charactersResults() {
-    return this.characters.filter((result: object) => (
-      result.name.toLowerCase().match(this.searchQuery.toLowerCase())
-    ));
-  }
-  // updated() {
-  //   console.log(this.searchCriteria);
-  // }
-
-  async fetch() {
-    await this.getComics();
-    await this.getCharacters();
-    this.isLoading = false;
-  }
 }
 </script>
 

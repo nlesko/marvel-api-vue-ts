@@ -4,7 +4,13 @@ const resource = 'v1/public/comics';
 export default {
 
 
-  get() {
+  get(offset?: number, limit?: number) {
+    if (offset && !limit) {
+      return http.get(`${resource}?offset=${offset}`);
+    }
+    if (offset && limit) {
+      return http.get(`${resource}?offset=${offset}&limit=${limit}`);
+    }
     return http.get(`${resource}`);
   },
 
