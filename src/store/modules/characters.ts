@@ -33,7 +33,8 @@ class Characters extends VuexModule {
     const moreData = await CharactersService.get(20, 100);
     const results = [...data.data.results, ...moreData.data.data.results];
     const filteredResults = results.reduce((acc, current) => {
-      const x = acc.find((item: object) => item.id === current.id);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const x = acc.find((item: any) => item.id === current.id);
       if (!x) {
         return acc.concat([current]);
       }

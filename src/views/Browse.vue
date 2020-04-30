@@ -72,15 +72,15 @@ export default class About extends Vue {
   }
 
   get comicsResults() {
-    return this.comics.filter((result: object) => (
-      // eslint-disable-next-line no-console
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.comics.filter((result: any) => (
       result.title.toLowerCase().match(this.searchQuery.toLowerCase())
     ));
   }
 
   get charactersResults() {
-    return this.characters.filter((result: object) => (
-      // eslint-disable-next-line no-console
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.characters.filter((result: any) => (
       result.name.toLowerCase().match(this.searchQuery.toLowerCase())
     ));
   }
